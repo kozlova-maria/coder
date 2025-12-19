@@ -1,0 +1,26 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -O2 -std=c99
+TARGET = huffman
+OBJS = huffman_core.o huffman_encode_decode.o main.o
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+
+huffman_core.o: huffman_core.c huffman.h
+	$(CC) $(CFLAGS) -c huffman_core.c
+
+huffman_encode_decode.o: huffman_encode_decode.c huffman.h
+	$(CC) $(CFLAGS) -c huffman_encode_decode.c
+
+main.o: main.c huffman.h
+	$(CC) $(CFLAGS) -c main.c
+
+clean:
+	rm -f $(OBJS) $(TARGET) *.huff *_decoded.bin
+
+test: $(TARGET)
+	./$(TARGET)
+
+.PHONY: all clean test
